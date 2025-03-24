@@ -10,7 +10,9 @@ O ParkFlow é uma solução completa para gestão de estacionamentos, permitindo
 - [Configuração](#configuração)
 - [Funcionalidades](#funcionalidades)
   - [Sistema de Estacionamento](#sistema-de-estacionamento)
+  - [Sistema de Cobrança](#sistema-de-cobrança)
   - [Sistema de Mensalistas](#sistema-de-mensalistas)
+  - [Sistema de Valet](#sistema-de-valet)
   - [Sistema de Pagamentos](#sistema-de-pagamentos)
   - [Relatórios](#relatórios)
 - [API](#api)
@@ -108,14 +110,31 @@ STRIPE_WEBHOOK_SECRET=sua-chave-webhook
 O ParkFlow oferece um sistema completo para gestão de estacionamentos:
 
 - Múltiplos estacionamentos por empresa
-- Configuração flexível de taxas por hora:
-  - Primeira hora: Valor diferenciado
-  - Horas adicionais: Valor diferenciado
-  - Diária: Valor máximo para período de 24 horas
 - Controle de horário de funcionamento
 - Gestão de vagas (total, ocupadas, disponíveis)
 - Controle de entrada e saída de veículos
 - Cálculo automático de tarifas
+
+### Sistema de Cobrança
+
+O ParkFlow possui um sistema de cobrança flexível e configurável:
+
+- **Configuração de taxas específicas**:
+  - Primeira hora: Valor diferenciado (ex: R$ 30,00)
+  - Horas adicionais: Valor diferenciado por hora (ex: R$ 5,00)
+  - Diária: Valor máximo para o período configurado (ex: R$ 50,00)
+  - Período da diária: Configurável (8h, 12h, 24h, etc.)
+
+- **Lógica de cobrança inteligente**:
+  - Aplicação automática da tarifa mais vantajosa para o cliente
+  - Quando o valor das horas atinge ou ultrapassa o valor da diária, é cobrado apenas o valor da diária
+  - Para permanências que excedem o período da diária, aplica-se múltiplos da diária + horas adicionais
+  
+- **Exemplo de cobrança**:
+  - Configuração: Primeira hora R$ 30,00, horas adicionais R$ 5,00, diária (24h) R$ 50,00
+  - Cliente permanece 5 horas: R$ 30,00 + (4 × R$ 5,00) = R$ 50,00
+  - Cliente permanece 6 horas: Cobrança limitada à diária = R$ 50,00
+  - Cliente permanece 26 horas: Uma diária (R$ 50,00) + 2 horas (R$ 30,00 primeira hora + R$ 5,00 adicional) = R$ 85,00
 
 ### Sistema de Mensalistas
 
@@ -127,6 +146,50 @@ O ParkFlow suporta a gestão completa de mensalistas com as seguintes funcionali
 - Definição de valor mensal personalizado por cliente
 - Histórico de pagamentos com status (pago, pendente, atrasado)
 - Vagas não utilizadas por mensalistas são automaticamente liberadas para o público
+
+### Sistema de Valet
+
+O ParkFlow oferece um sistema completo de gerenciamento de valet:
+
+- **Solicitação de veículos pelo cliente ou empresa**:
+  - Clientes podem solicitar seus veículos através da plataforma
+  - Empresas (ex: hospitais, restaurantes) podem solicitar veículos em nome dos clientes
+  - Identificação por placa do veículo
+
+- **Gestão de fila de solicitações**:
+  - Fila organizada por ordem de chegada das solicitações
+  - Painel para manobristas visualizarem solicitações pendentes
+  - Sistema de atribuição de solicitações a manobristas específicos
+
+- **Rastreamento de status**:
+  - Solicitação pendente
+  - Em processamento (manobrista buscando o veículo)
+  - Concluída (veículo entregue)
+  - Cancelada
+
+- **Personalização para setores específicos**:
+  - Hospitais: possibilidade de incluir número do quarto/setor
+  - Empresas: referência interna como número de cliente
+  - Campos personalizados para notas e instruções especiais
+
+- **Gestão de manobristas**:
+  - Cadastro completo de manobristas com registro de CNH
+  - Controle de status (ativo, inativo, suspenso)
+  - Histórico de entregas realizadas por manobrista
+  - Gestão de escala e disponibilidade
+
+- **Processo de entrega e recebimento**:
+  - Confirmação digital de recebimento pelo cliente
+  - Registro da condição do veículo na entrega
+  - Sistema para reportar problemas ou danos
+  - Upload de fotos como evidência
+  - Assinatura digital do cliente
+  - Registro completo para fins de auditoria e segurança
+
+- **Notificações**:
+  - Alertas para manobristas sobre novas solicitações
+  - Notificações para clientes sobre o status de sua solicitação
+  - Estimativa de tempo para entrega do veículo
 
 ### Sistema de Pagamentos
 

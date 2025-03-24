@@ -20,6 +20,7 @@ final class ParkingLot extends Model
         'hourly_rate',
         'additional_hour_rate',
         'daily_rate',
+        'daily_period',
         'monthly_rate',
         'opening_time',
         'closing_time',
@@ -29,6 +30,7 @@ final class ParkingLot extends Model
     protected $casts = [
         'opening_time' => 'datetime:H:i',
         'closing_time' => 'datetime:H:i',
+        'daily_period' => 'integer',
     ];
 
     /**
@@ -63,6 +65,21 @@ final class ParkingLot extends Model
         return $this->hasMany(MonthlySubscriber::class);
     }
 
+    public function valetRequests(): HasMany
+    {
+        return $this->hasMany(ValetRequest::class);
+    }
+
+    public function valetOperators(): HasMany
+    {
+        return $this->hasMany(ValetOperator::class);
+    }
+
+    public function vehicleHandovers(): HasMany
+    {
+        return $this->hasMany(VehicleHandover::class);
+    }
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
@@ -89,5 +106,47 @@ final class ParkingLot extends Model
     {
         $this->available_spots += 1;
         $this->save();
+    }
+
+    /**
+     * Calcula o valor a ser cobrado com base no tempo de permanência.
+     *
+     * @param \DateTimeInterface $checkIn Data e hora de entrada
+     * @param \DateTimeInterface $checkOut Data e hora de saída
+     * @return float Valor total a ser cobrado
+     */
+    public function calculateParkingFee(\DateTimeInterface $checkIn, \DateTimeInterface $checkOut): float
+    {
+        // Calcula a duração em horas (arredondando para cima)
+        $duration = ceil($checkOut->getTimestamp() - $checkIn->getTimestamp()) / 3600;
+
+        // Calcula o número de períodos diários completos
+        $dailyPeriod = $this->daily_period ?: 24; // Se não definido, assume 24 horas
+        $fullDays = floor($duration / $dailyPeriod);
+
+        // Calcula as horas restantes após os períodos diários completos
+        $remainingHours = $duration - ($fullDays * $dailyPeriod);
+
+        // Valor base para os períodos diários completos
+        $fee = $fullDays * $this->daily_rate;
+
+        // Adiciona o valor para as horas restantes
+        if ($remainingHours > 0) {
+            // Primeira hora
+            $remainingFee = $this->hourly_rate;
+
+            // Horas adicionais
+            if ($remainingHours > 1) {
+                $remainingFee += min($this->additional_hour_rate * ($remainingHours - 1),
+                                    $this->daily_rate - $this->hourly_rate);
+            }
+
+            // Limite o valor das horas restantes ao valor da diária
+            $remainingFee = min($remainingFee, $this->daily_rate);
+
+            $fee += $remainingFee;
+        }
+
+        return $fee;
     }
 }
