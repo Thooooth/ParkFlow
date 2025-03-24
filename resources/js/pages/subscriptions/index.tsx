@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
-import { PageProps } from '@/types';
+import { type BreadcrumbItem } from '@/types';
 import { FormEventHandler, useState } from 'react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import AppLayout from '@/layouts/app-layout';
 import { useForm } from '@inertiajs/react';
 
 interface Plan {
@@ -15,7 +15,7 @@ interface Plan {
     features: string[];
 }
 
-interface Props extends PageProps {
+interface Props {
     plans: Plan[];
     company: {
         subscription?: {
@@ -27,9 +27,15 @@ interface Props extends PageProps {
     };
 }
 
-export default function Index({ auth, plans, company, intent }: Props) {
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Planos e Assinaturas',
+        href: route('subscriptions.index'),
+    },
+];
+export default function Index({ plans }: Props) {
     const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
-    const { data, setData, post, processing, errors } = useForm({
+    const { post, processing } = useForm({
         plan: '',
         payment_method: '',
     });
@@ -40,10 +46,7 @@ export default function Index({ auth, plans, company, intent }: Props) {
     };
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={<h2 className="text-xl font-semibold">Planos e Assinaturas</h2>}
-        >
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Planos e Assinaturas" />
 
             <div className="py-12">
@@ -109,6 +112,6 @@ export default function Index({ auth, plans, company, intent }: Props) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </AppLayout>
     );
 }

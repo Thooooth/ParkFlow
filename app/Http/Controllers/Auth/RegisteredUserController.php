@@ -12,8 +12,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use App\Models\Company;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\DB;
+use App\Models\Enums\RoleUserEnum;
 
 final class RegisteredUserController extends Controller
 {
@@ -35,19 +38,44 @@ final class RegisteredUserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => [
+                'required',
+                'confirmed',
+                Rules\Password::defaults()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->min(8)
+            ],
+            'company_name' => 'required|string|max:255',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        try {
+            return DB::transaction(function () use ($request) {
+                $company = Company::create([
+                    'name' => $request->company_name,
+                    'email' => $request->email,
+                ]);
 
-        event(new Registered($user));
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'company_id' => $company->id,
+                    'role' => RoleUserEnum::ADMIN,
+                    'is_active' => true,
+                ]);
 
-        Auth::login($user);
+                event(new Registered($user));
 
-        return to_route('dashboard');
+                Auth::login($user);
+
+                return to_route('dashboard');
+            });
+        } catch (\Exception $e) {
+            return back()->withErrors([
+                'error' => 'Ocorreu um erro ao criar sua conta. Por favor, tente novamente.',
+            ])->withInput();
+        }
     }
 }

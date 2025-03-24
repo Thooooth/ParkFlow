@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Subscription;
 
+use App\Http\Controllers\Controller;
 use App\Models\SubscriptionPlan;
-use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+use Illuminate\Http\Request;
+use Exception;
 
 final class SubscriptionController extends Controller
 {
@@ -16,10 +18,10 @@ final class SubscriptionController extends Controller
         $plans = SubscriptionPlan::with('companies')->get();
         $company = Auth::user()->company;
 
-        return view('subscriptions.index', [
+        return Inertia::render('subscriptions/index', [
             'plans' => $plans,
             'company' => $company,
-            'intent' => $company->createSetupIntent(),
+           // 'intent' => $company->createSetupIntent(),
         ]);
     }
 

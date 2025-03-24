@@ -7,7 +7,7 @@ namespace App\Models;
 use App\Models\Enums\StatusCompanyEnum;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Cashier\Billable;
-
+use Carbon\Carbon;
 final class Company extends Model
 {
     use Billable;
@@ -50,5 +50,15 @@ final class Company extends Model
     public function onTrial()
     {
         return $this->trial_ends_at && $this->trial_ends_at->isFuture();
+    }
+
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($company): void {
+            $company->subscription_status = StatusCompanyEnum::ACTIVE->value;
+            $company->trial_ends_at = Carbon::now()->addDays(15);
+        });
     }
 }

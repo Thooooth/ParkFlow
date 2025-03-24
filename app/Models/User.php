@@ -47,7 +47,7 @@ final class User extends Authenticatable
         parent::boot();
 
         static::creating(function ($user): void {
-            $user->role ??= RoleUserEnum::OPERATOR;
+            $user->role = $user->role ?? RoleUserEnum::OPERATOR;
         });
     }
 

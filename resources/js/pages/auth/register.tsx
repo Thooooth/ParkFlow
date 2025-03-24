@@ -14,6 +14,7 @@ type RegisterForm = {
     email: string;
     password: string;
     password_confirmation: string;
+    company_name: string;
 };
 
 export default function Register() {
@@ -22,6 +23,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        company_name: '',
     });
 
     const submit: FormEventHandler = (e) => {
@@ -99,6 +101,22 @@ export default function Register() {
                             placeholder="Confirm password"
                         />
                         <InputError message={errors.password_confirmation} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="company_name">Company name</Label>
+                        <Input
+                            id="company_name"
+                            type="text"
+                            required
+                            tabIndex={5}
+                            autoComplete="company-name"
+                            value={data.company_name}
+                            onChange={(e) => setData('company_name', e.target.value)}
+                            disabled={processing}
+                            placeholder="Company name"
+                        />
+                        <InputError message={errors.company_name} />
                     </div>
 
                     <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
