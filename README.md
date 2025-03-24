@@ -13,6 +13,7 @@ O ParkFlow é uma solução completa para gestão de estacionamentos, permitindo
   - [Sistema de Cobrança](#sistema-de-cobrança)
   - [Sistema de Mensalistas](#sistema-de-mensalistas)
   - [Sistema de Valet](#sistema-de-valet)
+  - [Sistema de Gerenciamento de Incidentes](#sistema-de-gerenciamento-de-incidentes)
   - [Sistema de Pagamentos](#sistema-de-pagamentos)
   - [Relatórios](#relatórios)
 - [API](#api)
@@ -190,6 +191,38 @@ O ParkFlow oferece um sistema completo de gerenciamento de valet:
   - Alertas para manobristas sobre novas solicitações
   - Notificações para clientes sobre o status de sua solicitação
   - Estimativa de tempo para entrega do veículo
+
+### Sistema de Gerenciamento de Incidentes
+
+O ParkFlow oferece um sistema avançado para registrar e gerenciar incidentes relacionados aos veículos:
+
+- **Registro de incidentes em diferentes momentos**:
+  - Pré-estacionamento: Danos já existentes identificados na entrada do veículo
+  - Durante o estacionamento: Incidentes ocorridos enquanto o veículo estava sob custódia
+  - Pós-estacionamento: Problemas identificados no momento da retirada do veículo
+
+- **Documentação completa de incidentes**:
+  - Descrição detalhada do problema
+  - Upload de múltiplos tipos de mídia (fotos, vídeos, áudios)
+  - Indicação da localização do dano no veículo
+  - Classificação por nível de severidade
+
+- **Acompanhamento e resolução**:
+  - Ciclo de vida completo do incidente (aberto, em andamento, resolvido, fechado)
+  - Notificação automática ao cliente
+  - Registro de confirmação do cliente
+  - Documentação das ações de resolução
+
+- **Responsabilidade e segurança**:
+  - Identificação do responsável pelo registro do incidente
+  - Rastreabilidade completa de todas as ações
+  - Proteção tanto para clientes quanto para o estacionamento
+  - Redução de disputas relacionadas a danos pré-existentes
+
+- **Integração com outros sistemas**:
+  - Vinculação ao serviço de valet
+  - Associação à sessão de estacionamento específica
+  - Histórico completo disponível para consulta
 
 ### Sistema de Pagamentos
 

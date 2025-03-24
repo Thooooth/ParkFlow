@@ -37,4 +37,9 @@ final class ParkingSession extends Model
     {
         return $this->belongsTo(Vehicle::class);
     }
+
+    public function incidents()
+    {
+        return $this->hasMany(VehicleIncident::class);
+    }
 }

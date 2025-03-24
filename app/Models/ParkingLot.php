@@ -80,6 +80,11 @@ final class ParkingLot extends Model
         return $this->hasMany(VehicleHandover::class);
     }
 
+    public function vehicleIncidents(): HasMany
+    {
+        return $this->hasMany(VehicleIncident::class);
+    }
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
