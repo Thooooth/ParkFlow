@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\ParkingLot;
-class ParkingLotPolicy
+use App\Models\User;
+
+final class ParkingLotPolicy
 {
     public function viewAny(User $user)
     {

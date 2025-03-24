@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Models\Enums\StatusCompanyEnum;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Cashier\Billable;
-use App\Models\Enums\StatusCompanyEnum;
 
-class Company extends Model
+final class Company extends Model
 {
     use Billable;
 
@@ -17,12 +19,12 @@ class Company extends Model
         'phone',
         'address',
         'subscription_status',
-        'trial_ends_at'
+        'trial_ends_at',
     ];
 
     protected $dates = [
         'trial_ends_at',
-        'subscription_ends_at'
+        'subscription_ends_at',
     ];
 
     public function users()

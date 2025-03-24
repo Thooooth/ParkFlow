@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Enums\StatusParkingSessionsEnum;
 use Illuminate\Database\Eloquent\Model;
 
-class ParkingSession extends Model
+final class ParkingSession extends Model
 {
     protected $fillable = [
         'parking_lot_id',
@@ -14,7 +16,7 @@ class ParkingSession extends Model
         'check_in',
         'check_out',
         'total_amount',
-        'status'
+        'status',
     ];
 
     protected $casts = [

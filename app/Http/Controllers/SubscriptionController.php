@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
-use App\Models\Company;
 use App\Models\SubscriptionPlan;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class SubscriptionController extends Controller
+final class SubscriptionController extends Controller
 {
     public function index()
     {
@@ -17,7 +19,7 @@ class SubscriptionController extends Controller
         return view('subscriptions.index', [
             'plans' => $plans,
             'company' => $company,
-            'intent' => $company->createSetupIntent()
+            'intent' => $company->createSetupIntent(),
         ]);
     }
 
@@ -25,7 +27,7 @@ class SubscriptionController extends Controller
     {
         $request->validate([
             'plan' => 'required|exists:subscription_plans,id',
-            'payment_method' => 'required'
+            'payment_method' => 'required',
         ]);
 
         $plan = SubscriptionPlan::findOrFail($request->plan);
@@ -33,16 +35,16 @@ class SubscriptionController extends Controller
 
         try {
             $company->newSubscription('default', $plan->stripe_price_id)
-                   ->create($request->payment_method);
+                ->create($request->payment_method);
 
             $company->update([
                 'subscription_status' => 'active',
-                'subscription_plan_id' => $plan->id
+                'subscription_plan_id' => $plan->id,
             ]);
 
             return redirect()->route('dashboard')
-                           ->with('success', 'Assinatura realizada com sucesso!');
-        } catch (\Exception $e) {
+                ->with('success', 'Assinatura realizada com sucesso!');
+        } catch (Exception $e) {
             return back()->withErrors(['message' => 'Erro ao processar pagamento: ' . $e->getMessage()]);
         }
     }
@@ -55,8 +57,8 @@ class SubscriptionController extends Controller
             $company->subscription('default')->cancel();
 
             return redirect()->route('subscriptions.index')
-                           ->with('success', 'Assinatura cancelada com sucesso!');
-        } catch (\Exception $e) {
+                ->with('success', 'Assinatura cancelada com sucesso!');
+        } catch (Exception $e) {
             return back()->withErrors(['message' => 'Erro ao cancelar assinatura: ' . $e->getMessage()]);
         }
     }
@@ -69,8 +71,8 @@ class SubscriptionController extends Controller
             $company->subscription('default')->resume();
 
             return redirect()->route('subscriptions.index')
-                           ->with('success', 'Assinatura retomada com sucesso!');
-        } catch (\Exception $e) {
+                ->with('success', 'Assinatura retomada com sucesso!');
+        } catch (Exception $e) {
             return back()->withErrors(['message' => 'Erro ao retomar assinatura: ' . $e->getMessage()]);
         }
     }

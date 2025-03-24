@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ParkingLot extends Model
+final class ParkingLot extends Model
 {
     protected $fillable = [
         'name',
@@ -12,7 +14,7 @@ class ParkingLot extends Model
         'total_spots',
         'available_spots',
         'hourly_rate',
-        'company_id'
+        'company_id',
     ];
 
     public function parkingSessions()

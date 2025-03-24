@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SubscriptionPlan extends Model
+final class SubscriptionPlan extends Model
 {
     protected $fillable = [
         'name',
@@ -14,7 +16,7 @@ class SubscriptionPlan extends Model
         'max_users',
         'has_analytics',
         'has_api_access',
-        'features'
+        'features',
     ];
 
     protected $casts = [
@@ -23,7 +25,7 @@ class SubscriptionPlan extends Model
         'max_users' => 'integer',
         'has_analytics' => 'boolean',
         'has_api_access' => 'boolean',
-        'features' => 'array'
+        'features' => 'array',
     ];
 
     public function companies()

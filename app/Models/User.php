@@ -1,17 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Enums\RoleUserEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Enums\RoleUserEnum;
-class User extends Authenticatable
+
+final class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +29,7 @@ class User extends Authenticatable
         'password',
         'company_id',
         'role',
-        'is_active'
+        'is_active',
     ];
 
     /**
@@ -37,6 +42,40 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($user): void {
+            $user->role ??= RoleUserEnum::OPERATOR;
+        });
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function isAdmin()
+    {
+        return RoleUserEnum::ADMIN === $this->role;
+    }
+
+    public function isManager()
+    {
+        return RoleUserEnum::MANAGER === $this->role;
+    }
+
+    public function isOperator()
+    {
+        return RoleUserEnum::OPERATOR === $this->role;
+    }
+
+    public function isActive()
+    {
+        return $this->is_active;
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -48,39 +87,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
-    }
-
-    public function isAdmin()
-    {
-        return $this->role === RoleUserEnum::ADMIN;
-    }
-
-    public function isManager()
-    {
-        return $this->role === RoleUserEnum::MANAGER;
-    }
-
-    public function isOperator()
-    {
-        return $this->role === RoleUserEnum::OPERATOR;
-    }
-
-    public function isActive()
-    {
-        return $this->is_active;
-    }
-
-    public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($user) {
-            $user->role ??= RoleUserEnum::OPERATOR;
-        });
     }
 }
