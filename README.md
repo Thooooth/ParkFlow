@@ -10,10 +10,14 @@ O ParkFlow é uma solução completa para gestão de estacionamentos, permitindo
 - [Configuração](#configuração)
 - [Funcionalidades](#funcionalidades)
   - [Sistema de Estacionamento](#sistema-de-estacionamento)
+  - [Sistema de Gerenciamento de Vagas Individuais](#sistema-de-gerenciamento-de-vagas-individuais)
   - [Sistema de Cobrança](#sistema-de-cobrança)
   - [Sistema de Mensalistas](#sistema-de-mensalistas)
   - [Sistema de Valet](#sistema-de-valet)
   - [Sistema de Gerenciamento de Incidentes](#sistema-de-gerenciamento-de-incidentes)
+  - [Sistema de Reservas Online](#sistema-de-reservas-online)
+  - [Carregamento para Veículos Elétricos](#carregamento-para-veículos-elétricos)
+  - [Portal para Empresas Parceiras](#portal-para-empresas-parceiras)
   - [Sistema de Pagamentos](#sistema-de-pagamentos)
   - [Relatórios](#relatórios)
 - [API](#api)
@@ -115,6 +119,46 @@ O ParkFlow oferece um sistema completo para gestão de estacionamentos:
 - Gestão de vagas (total, ocupadas, disponíveis)
 - Controle de entrada e saída de veículos
 - Cálculo automático de tarifas
+
+### Sistema de Gerenciamento de Vagas Individuais
+
+O ParkFlow possibilita o controle preciso de cada vaga individual do estacionamento:
+
+- **Mapeamento Detalhado**:
+  - Identificação única para cada vaga (alfanumérica, numérica ou alfabética)
+  - Organização por andares, setores e zonas
+  - Sinalização de vagas especiais (PCD, veículos elétricos, etc.)
+  - Diferentes tamanhos de vagas (normal, grande, extra grande)
+
+- **Rastreamento em Tempo Real**:
+  - Visualização do status atual de cada vaga (disponível, ocupada, reservada, manutenção)
+  - Registro do tempo de ocupação de cada vaga
+  - Informações sobre o veículo que ocupa a vaga
+  - Dashboard visual para monitoramento do estacionamento
+
+- **Alocação Inteligente**:
+  - Direcionamento automático para vagas adequadas ao tipo de veículo
+  - Priorização baseada em preferências do cliente
+  - Reserva antecipada de vagas específicas
+  - Identificação da localização exata para facilitar o estacionamento
+
+- **Gestão Operacional**:
+  - Marcação de vagas para manutenção ou bloqueio
+  - Histórico completo de utilização por vaga
+  - Indicadores de desempenho por localização
+  - Análise de padrões de uso para otimização do espaço
+
+- **Benefícios para Clientes**:
+  - Menor tempo gasto procurando vagas disponíveis
+  - Direcionamento preciso para a vaga designada
+  - Melhor experiência em estacionamentos grandes
+  - Informações detalhadas sobre localização (andar, setor, vaga)
+
+- **Aplicações Especiais**:
+  - Integração com sistemas de estacionamento autônomo
+  - Suporte a estacionamentos robotizados
+  - Compatibilidade com sensores de ocupação
+  - Visualização em mapa interativo ou grid
 
 ### Sistema de Cobrança
 
@@ -223,6 +267,96 @@ O ParkFlow oferece um sistema avançado para registrar e gerenciar incidentes re
   - Vinculação ao serviço de valet
   - Associação à sessão de estacionamento específica
   - Histórico completo disponível para consulta
+
+### Sistema de Reservas Online
+
+O ParkFlow oferece um sistema completo de reservas antecipadas de vagas:
+
+- **Reserva Antecipada**:
+  - Possibilidade de reservar vagas com dias ou horas de antecedência
+  - Definição flexível de período de estacionamento
+  - Seleção do tipo de vaga (normal, para deficientes, para idosos, etc.)
+  - Visualização de disponibilidade em tempo real
+
+- **Pagamento Antecipado**:
+  - Opção de pré-pagamento com desconto
+  - Suporte a diversos métodos de pagamento
+  - Possibilidade de cancelamento com política flexível
+  - Descontos promocionais através de códigos
+
+- **Entrada Facilitada**:
+  - Geração de QR Code único para cada reserva
+  - Leitura automática do QR Code na entrada
+  - Confirmação instantânea sem necessidade de tickets físicos
+  - Redução de filas e espera na entrada
+
+- **Sistema de Lembretes**:
+  - Notificações automáticas de confirmação
+  - Lembretes de reserva próxima do horário
+  - Alertas em caso de congestionamento ou eventos
+  - Opção de estender a reserva pelo aplicativo
+
+- **Integração com Agenda**:
+  - Sincronização com calendários digitais
+  - Reservas recorrentes para usuários frequentes
+  - Histórico completo de reservas anteriores
+  - Sugestões inteligentes com base no histórico
+
+### Carregamento para Veículos Elétricos
+
+O ParkFlow integra um sistema completo para gestão de estações de carregamento para veículos elétricos:
+
+- **Infraestrutura de Carregamento**:
+  - Suporte a diversos tipos de conectores (Type1, Type2, CHAdeMO, CCS, etc.)
+  - Monitoramento em tempo real do estado de carregamento
+  - Visualização de disponibilidade das estações
+  - Manutenção preventiva e corretiva das estações
+
+- **Cobrança Personalizada**:
+  - Taxas por kWh consumido
+  - Taxas adicionais por tempo ocupado
+  - Integração com o sistema de pagamento do estacionamento
+  - Relatórios detalhados de consumo e faturamento
+
+- **Experiência do Usuário**:
+  - Reserva antecipada de estações de carregamento
+  - Notificações quando o carregamento estiver completo
+  - Visualização do progresso do carregamento pelo aplicativo
+  - Histórico de sessões de carregamento
+
+- **Gestão de Energia**:
+  - Balanceamento de carga entre estações
+  - Integração com sistemas de energia renovável
+  - Priorização de carregamento em horários de baixa demanda
+  - Estatísticas de consumo e economia de carbono
+
+### Portal para Empresas Parceiras
+
+O ParkFlow oferece um sistema dedicado para empresas parceiras gerenciarem convênios de estacionamento:
+
+- **Validação de Tickets**:
+  - Interface intuitiva para empresas validarem tickets de seus clientes
+  - Múltiplos métodos de validação (portal web, aplicativo, API)
+  - Leitura de QR Code para validação instantânea
+  - Confirmação por email para o cliente
+
+- **Gestão de Convênios**:
+  - Dashboard personalizado para cada empresa parceira
+  - Configuração de descontos e benefícios específicos
+  - Definição de limites mensais de validações
+  - Renovação automática de contratos
+
+- **Relatórios Analíticos**:
+  - Relatórios detalhados de uso por período
+  - Análise de padrões de utilização por clientes
+  - Exportação de dados em diversos formatos
+  - Visualização gráfica de tendências
+
+- **Faturamento Automático**:
+  - Geração automática de faturas mensais
+  - Detalhamento de cada validação na fatura
+  - Integração com sistemas de pagamento
+  - Histórico completo de faturas e pagamentos
 
 ### Sistema de Pagamentos
 
