@@ -11,6 +11,7 @@ O ParkFlow é uma solução completa para gestão de estacionamentos, permitindo
 - [Funcionalidades](#funcionalidades)
   - [Sistema de Estacionamento](#sistema-de-estacionamento)
   - [Sistema de Gerenciamento de Vagas Individuais](#sistema-de-gerenciamento-de-vagas-individuais)
+  - [Sistema de Gestão de Veículos](#sistema-de-gestão-de-veículos)
   - [Sistema de Cobrança](#sistema-de-cobrança)
   - [Sistema de Mensalistas](#sistema-de-mensalistas)
   - [Sistema de Valet](#sistema-de-valet)
@@ -130,6 +131,28 @@ O ParkFlow possibilita o controle preciso de cada vaga individual do estacioname
   - Sinalização de vagas especiais (PCD, veículos elétricos, etc.)
   - Diferentes tamanhos de vagas (normal, grande, extra grande)
 
+- **Dimensionamento Inteligente**:
+  - **Categorias de Tamanho**:
+    - Vagas Pequenas: para motos e veículos compactos
+    - Vagas Normais: para carros de passeio padrão
+    - Vagas Grandes: para SUVs, pickups e vans
+    - Vagas Extra Grandes: para micro-ônibus
+    - Vagas Especiais: para ônibus, caminhões e veículos longos
+  - **Combinação de Vagas**:
+    - Possibilidade de combinar múltiplas vagas adjacentes para veículos maiores
+    - Configuração dinâmica de blocos de vagas para eventos especiais
+    - Vagas duplas e triplas predefinidas para veículos longos
+    - Sistema de bloqueio automático de vagas adjacentes quando necessário
+
+- **Tipos Especiais de Vagas**:
+  - Vagas PCD: com dimensões e localização adequadas para acessibilidade
+  - Vagas para Idosos: posicionadas estrategicamente próximas a acessos
+  - Vagas para Gestantes: com espaço adicional e localização privilegiada
+  - Vagas para Veículos Elétricos: integradas com estações de carregamento
+  - Vagas para Veículos com GNV: em áreas com ventilação adequada
+  - Vagas Premium: localizações privilegiadas com cobrança diferenciada
+  - Vagas de Rápida Rotatividade: para permanência máxima de 15-30 minutos
+
 - **Rastreamento em Tempo Real**:
   - Visualização do status atual de cada vaga (disponível, ocupada, reservada, manutenção)
   - Registro do tempo de ocupação de cada vaga
@@ -160,6 +183,86 @@ O ParkFlow possibilita o controle preciso de cada vaga individual do estacioname
   - Compatibilidade com sensores de ocupação
   - Visualização em mapa interativo ou grid
 
+- **Integração com Sistema de Mensalistas**:
+  - Configuração de tipos de vagas específicas para cada mensalista
+  - Definição de preferências de localização para mensalistas
+  - Reserva fixa ou flutuante de vagas para mensalistas
+  - Opções de upgrade para acesso a vagas premium ou especiais
+  - Tarifas diferenciadas com base no tipo e tamanho da vaga contratada
+
+- **Integração com Sistema de Valet**:
+  - Zonas específicas para veículos com serviço de valet
+  - Organização otimizada para facilitar o trabalho dos manobristas
+  - Registro de localização precisa para recuperação rápida do veículo
+  - Hierarquia de acesso e restrições para manobristas
+
+- **Estatísticas e Análises**:
+  - Taxa de ocupação por tipo e tamanho de vaga
+  - Tempo médio de ocupação por categoria de vaga
+  - Identificação de gargalos e oportunidades de otimização
+  - Previsão de demanda com base no histórico de uso
+
+### Sistema de Gestão de Veículos
+
+O ParkFlow oferece um sistema completo para cadastro e gestão de veículos, com ênfase em suas dimensões e características especiais:
+
+- **Características Físicas**:
+  - Registro detalhado de dimensões (comprimento, largura, altura)
+  - Classificação por tamanho (pequeno, médio, grande, extra grande)
+  - Peso do veículo para cálculo de capacidade de carga
+  - Número de eixos para veículos de grande porte
+  - Campo para requisitos especiais (guincho, reboque, etc.)
+
+- **Tipos de Veículos**:
+  - **Motocicletas**: Dimensões reduzidas com alocação em vagas específicas
+  - **Carros de Passeio**: Categoria padrão com dimensões regulares
+  - **SUVs e Picapes**: Veículos de maior porte com tarifação diferenciada
+  - **Vans e Micro-ônibus**: Veículos que podem exigir vagas duplas
+  - **Ônibus e Caminhões**: Veículos de grande porte com necessidades específicas
+  - **Veículos Especiais**: Categorias para ambulâncias, viaturas, food trucks, etc.
+
+- **Características Especiais**:
+  - Identificação de veículos elétricos e tipo de conector
+  - Veículos adaptados para pessoas com deficiência
+  - Veículos com GNV instalado (restrições específicas)
+  - Tipo de habilitação necessária para condução
+
+- **Gestão de Frota**:
+  - Registro de múltiplos veículos por usuário
+  - Identificação de veículos corporativos
+  - Vinculação de veículos a contratos específicos
+  - Substituição temporária ou permanente de veículos
+
+- **Alocação Inteligente de Vagas**:
+  - Cálculo automático do número de vagas necessárias baseado no tamanho
+  - Recomendação de zonas compatíveis com as dimensões do veículo
+  - Alerta para restrições de altura ou peso em determinados pisos
+  - Otimização de uso do espaço com base no tipo de veículo
+
+- **Preferências e Histórico**:
+  - Registro de zona/andar preferencial para cada veículo
+  - Histórico de estacionamento por veículo
+  - Padrões de uso para otimização de sugestões
+  - Personalização de experiência por veículo
+
+- **Integração com Sistema de Mensalistas**:
+  - Alocação de vagas específicas por dimensão do veículo
+  - Precificação diferenciada baseada nas características do veículo
+  - Pacotes especiais para veículos maiores ou com necessidades específicas
+  - Opções de upgrade para veículos de maior porte
+
+- **Documentação e Conformidade**:
+  - Registro de placa, modelo, cor e ano
+  - Armazenamento seguro de informações do proprietário
+  - Verificação de documentação atualizada (quando necessário)
+  - Conformidade com regulamentações de estacionamento
+
+- **Benefícios Operacionais**:
+  - Melhor aproveitamento do espaço do estacionamento
+  - Redução de conflitos por vagas inadequadas
+  - Precificação justa baseada no espaço ocupado
+  - Prevenção de danos a veículos e estrutura do estacionamento
+
 ### Sistema de Cobrança
 
 O ParkFlow possui um sistema de cobrança flexível e configurável:
@@ -169,6 +272,22 @@ O ParkFlow possui um sistema de cobrança flexível e configurável:
   - Horas adicionais: Valor diferenciado por hora (ex: R$ 5,00)
   - Diária: Valor máximo para o período configurado (ex: R$ 50,00)
   - Período da diária: Configurável (8h, 12h, 24h, etc.)
+
+- **Tarifação por Tipo de Veículo e Vaga**:
+  - Motos: Tarifa reduzida
+  - Carros de passeio: Tarifa padrão
+  - SUVs e pickups: Acréscimo percentual
+  - Vans e micro-ônibus: Tarifa especial
+  - Ônibus e caminhões: Tarifação específica com base no comprimento
+  - Veículos que ocupam múltiplas vagas: Cobrança proporcional ao número de vagas
+  - Veículos elétricos: Opções de pacotes com carregamento incluído
+
+- **Precificação Dinâmica**:
+  - Variação de tarifas com base na ocupação
+  - Valores diferenciados por horário ou dia da semana
+  - Tarifas promocionais em horários de baixa ocupação
+  - Tarifas premium para vagas preferenciais (próximas à entrada, cobertas, etc.)
+  - Descontos automáticos para permanências longas
 
 - **Lógica de cobrança inteligente**:
   - Aplicação automática da tarifa mais vantajosa para o cliente
@@ -181,16 +300,47 @@ O ParkFlow possui um sistema de cobrança flexível e configurável:
   - Cliente permanece 6 horas: Cobrança limitada à diária = R$ 50,00
   - Cliente permanece 26 horas: Uma diária (R$ 50,00) + 2 horas (R$ 30,00 primeira hora + R$ 5,00 adicional) = R$ 85,00
 
+- **Pacotes e Promoções**:
+  - Pacotes de horas/dias com desconto
+  - Programas de fidelidade com tarifas especiais
+  - Convênios personalizados por empresa
+  - Vouchers e códigos promocionais
+  - Passes semanais e mensais para não-mensalistas
+
 ### Sistema de Mensalistas
 
 O ParkFlow suporta a gestão completa de mensalistas com as seguintes funcionalidades:
 
-- Cadastro de mensalistas com informações de contato e veículo
-- Controle de vagas reservadas para mensalistas
-- Gestão de contratos e pagamentos
-- Definição de valor mensal personalizado por cliente
-- Histórico de pagamentos com status (pago, pendente, atrasado)
-- Vagas não utilizadas por mensalistas são automaticamente liberadas para o público
+- **Cadastro e Gestão**:
+  - Cadastro de mensalistas com informações de contato e veículo
+  - Controle de vagas reservadas para mensalistas
+  - Gestão de contratos e pagamentos
+  - Definição de valor mensal personalizado por cliente
+  - Histórico de pagamentos com status (pago, pendente, atrasado)
+  - Vagas não utilizadas por mensalistas são automaticamente liberadas para o público
+
+- **Tipos de Vagas para Mensalistas**:
+  - **Vaga Fixa**: mensalista tem sempre a mesma vaga garantida
+  - **Vaga Flutuante**: mensalista tem direito a qualquer vaga disponível
+  - **Vaga Compartilhada**: utilização em horários específicos (diurno/noturno)
+  - **Vaga Especial**: dimensionada para veículos maiores (SUVs, vans, ônibus)
+  - **Vaga com Infraestrutura**: para veículos elétricos ou com necessidades específicas
+  - **Vaga com Serviços**: inclui lavagem, manutenção ou valet
+
+- **Planos e Pacotes**:
+  - Planos baseados no tipo e tamanho do veículo
+  - Pacotes que incluem múltiplos veículos por contrato
+  - Opções para acesso a diferentes unidades da rede
+  - Planos família/empresa com múltiplos usuários
+  - Tarifação diferenciada por horário de acesso (integral, comercial, noturno)
+
+- **Benefícios e Funcionalidades Adicionais**:
+  - Direito a períodos de tolerância estendidos
+  - Acumulação de pontos para descontos ou serviços
+  - Facilidades de pagamento (débito automático, faturamento)
+  - Prioridade de acesso em eventos ou horários de pico
+  - Acesso a zonas exclusivas e serviços premium
+  - Transferência temporária de direitos para terceiros
 
 ### Sistema de Valet
 
@@ -277,6 +427,20 @@ O ParkFlow oferece um sistema completo de reservas antecipadas de vagas:
   - Definição flexível de período de estacionamento
   - Seleção do tipo de vaga (normal, para deficientes, para idosos, etc.)
   - Visualização de disponibilidade em tempo real
+
+- **Reservas por Categoria de Veículo**:
+  - Reservas específicas para cada tipo e tamanho de veículo
+  - Indicação das dimensões e altura máxima permitida
+  - Reserva de múltiplas vagas para veículos longos (ônibus, caminhões)
+  - Filtros para encontrar vagas adequadas com base nas dimensões
+  - Reservas de vagas adjacentes para comboios ou grupos de veículos
+
+- **Especificações Técnicas**:
+  - Sistema de verificação de compatibilidade veículo-vaga
+  - Informações sobre altura máxima permitida por setor
+  - Restrições de peso para pisos específicos
+  - Definição de rotas de acesso para veículos de grande porte
+  - Orientações específicas para veículos com características especiais
 
 - **Pagamento Antecipado**:
   - Opção de pré-pagamento com desconto

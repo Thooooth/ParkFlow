@@ -90,13 +90,29 @@ final class ParkingSpot extends Model
             return false;
         }
 
+        // Se esta vaga estiver associada a uma sessão com múltiplas vagas
+        if ($this->current_session_id) {
+            $session = $this->currentSession;
+
+            if ($session && $session->metadata) {
+                $metadata = json_decode($session->metadata, true);
+
+                // Se esta sessão ocupa múltiplas vagas
+                if (isset($metadata['all_spots']) && is_array($metadata['all_spots']) && count($metadata['all_spots']) > 1) {
+                    // Apenas libera esta vaga específica
+                    $this->status = 'available';
+                    $this->current_session_id = null;
+                    $this->occupied_since = null;
+                    return $this->save();
+                }
+            }
+        }
+
+        // Caso padrão - apenas uma vaga
         $this->status = 'available';
         $this->current_session_id = null;
         $this->occupied_since = null;
-
-        // Se havia uma reserva específica para esta vaga, pode remover também
-        // ou manter para análise posterior
-        // $this->current_reservation_id = null;
+        $this->current_reservation_id = null;
 
         return $this->save();
     }

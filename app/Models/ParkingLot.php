@@ -187,28 +187,41 @@ final class ParkingLot extends Model
      * @param \DateTimeInterface $checkIn Data e hora de entrada
      * @param \DateTimeInterface $checkOut Data e hora de saída
      * @param ParkingReservation|null $reservation Reserva associada, se houver
+     * @param Vehicle|null $vehicle Veículo, se disponível para calcular tarifas específicas
      * @return float Valor total a ser cobrado
      */
-    public function calculateParkingFee(\DateTimeInterface $checkIn, \DateTimeInterface $checkOut, ?ParkingReservation $reservation = null): float
-    {
+    public function calculateParkingFee(
+        \DateTimeInterface $checkIn,
+        \DateTimeInterface $checkOut,
+        ?ParkingReservation $reservation = null,
+        ?Vehicle $vehicle = null
+    ): float {
         // Se não houver reserva, usa a lógica padrão
         if (!$reservation) {
-            return $this->calculateStandardParkingFee($checkIn, $checkOut);
+            return $this->calculateStandardParkingFee($checkIn, $checkOut, $vehicle);
         }
 
         // Se houver reserva, verifica se houve atraso na saída
         if ($checkOut > $reservation->end_time) {
             // Calcula a taxa da reserva (já paga ou a ser paga)
-            $reservationFee = $this->calculateStandardParkingFee($reservation->start_time, $reservation->end_time);
+            $reservationFee = $this->calculateStandardParkingFee(
+                $reservation->start_time,
+                $reservation->end_time,
+                $vehicle
+            );
 
             // Calcula a taxa adicional pelo tempo excedido
-            $lateFee = $this->calculateLateFee($reservation->end_time, $checkOut);
+            $lateFee = $this->calculateLateFee($reservation->end_time, $checkOut, $vehicle);
 
             return $reservationFee + $lateFee;
         }
 
         // Se saiu antes ou no horário previsto, cobra apenas o valor da reserva
-        return $this->calculateStandardParkingFee($reservation->start_time, $reservation->end_time);
+        return $this->calculateStandardParkingFee(
+            $reservation->start_time,
+            $reservation->end_time,
+            $vehicle
+        );
     }
 
     /**
@@ -216,10 +229,14 @@ final class ParkingLot extends Model
      *
      * @param \DateTimeInterface $checkIn Data e hora de entrada
      * @param \DateTimeInterface $checkOut Data e hora de saída
+     * @param Vehicle|null $vehicle Veículo, se disponível para calcular tarifas específicas
      * @return float Valor total a ser cobrado
      */
-    public function calculateStandardParkingFee(\DateTimeInterface $checkIn, \DateTimeInterface $checkOut): float
-    {
+    public function calculateStandardParkingFee(
+        \DateTimeInterface $checkIn,
+        \DateTimeInterface $checkOut,
+        ?Vehicle $vehicle = null
+    ): float {
         // Calcula a duração em horas (arredondando para cima)
         $duration = ceil($checkOut->getTimestamp() - $checkIn->getTimestamp()) / 3600;
 
@@ -230,22 +247,27 @@ final class ParkingLot extends Model
         // Calcula as horas restantes após os períodos diários completos
         $remainingHours = $duration - ($fullDays * $dailyPeriod);
 
+        // Obtém as taxas ajustadas pelo tipo de veículo
+        $hourlyRate = $this->getAdjustedHourlyRate($vehicle);
+        $additionalHourRate = $this->getAdjustedAdditionalHourRate($vehicle);
+        $dailyRate = $this->getAdjustedDailyRate($vehicle);
+
         // Valor base para os períodos diários completos
-        $fee = $fullDays * $this->daily_rate;
+        $fee = $fullDays * $dailyRate;
 
         // Adiciona o valor para as horas restantes
         if ($remainingHours > 0) {
             // Primeira hora
-            $remainingFee = $this->hourly_rate;
+            $remainingFee = $hourlyRate;
 
             // Horas adicionais
             if ($remainingHours > 1) {
-                $remainingFee += min($this->additional_hour_rate * ($remainingHours - 1),
-                                    $this->daily_rate - $this->hourly_rate);
+                $remainingFee += min($additionalHourRate * ($remainingHours - 1),
+                                    $dailyRate - $hourlyRate);
             }
 
             // Limite o valor das horas restantes ao valor da diária
-            $remainingFee = min($remainingFee, $this->daily_rate);
+            $remainingFee = min($remainingFee, $dailyRate);
 
             $fee += $remainingFee;
         }
@@ -254,23 +276,115 @@ final class ParkingLot extends Model
     }
 
     /**
+     * Obtém a taxa horária ajustada para o tipo de veículo.
+     */
+    public function getAdjustedHourlyRate(?Vehicle $vehicle = null): float
+    {
+        if (!$vehicle) {
+            return $this->hourly_rate;
+        }
+
+        $surchargePercent = $this->getVehicleSurchargePercent($vehicle);
+        return $this->hourly_rate * (1 + $surchargePercent / 100);
+    }
+
+    /**
+     * Obtém a taxa de hora adicional ajustada para o tipo de veículo.
+     */
+    public function getAdjustedAdditionalHourRate(?Vehicle $vehicle = null): float
+    {
+        if (!$vehicle) {
+            return $this->additional_hour_rate;
+        }
+
+        $surchargePercent = $this->getVehicleSurchargePercent($vehicle);
+        return $this->additional_hour_rate * (1 + $surchargePercent / 100);
+    }
+
+    /**
+     * Obtém a taxa diária ajustada para o tipo de veículo.
+     */
+    public function getAdjustedDailyRate(?Vehicle $vehicle = null): float
+    {
+        if (!$vehicle) {
+            return $this->daily_rate;
+        }
+
+        $surchargePercent = $this->getVehicleSurchargePercent($vehicle);
+        return $this->daily_rate * (1 + $surchargePercent / 100);
+    }
+
+    /**
+     * Calcula o percentual de recarga com base no tipo e tamanho do veículo.
+     */
+    private function getVehicleSurchargePercent(Vehicle $vehicle): float
+    {
+        // Percentuais de aumento por tipo/tamanho de veículo
+        $surcharges = [
+            // Por tipo
+            'motorcycle' => -20, // Desconto de 20%
+            'car' => 0,  // Padrão
+            'suv' => 15, // Acréscimo de 15%
+            'pickup' => 15,
+            'van' => 25,
+            'minibus' => 50,
+            'bus' => 100, // Dobro do preço
+            'truck' => 100,
+
+            // Sobrescritos por tamanho quando maior
+            'size_1' => -10, // Pequeno: desconto de 10%
+            'size_2' => 0,   // Normal: preço padrão
+            'size_3' => 25,  // Grande: acréscimo de 25%
+            'size_4' => 50,  // Extra grande: acréscimo de 50%
+            'size_5' => 100, // Especial: dobro do preço
+        ];
+
+        // Obtém o percentual base pelo tipo
+        $percent = $surcharges[$vehicle->vehicle_type] ?? 0;
+
+        // Verifica se o percentual pelo tamanho é maior
+        $sizePercent = $surcharges["size_{$vehicle->size}"] ?? 0;
+        if ($sizePercent > $percent) {
+            $percent = $sizePercent;
+        }
+
+        // Acréscimo adicional para veículos que ocupam múltiplas vagas
+        $spotCount = $vehicle->spot_count;
+        if ($spotCount > 1) {
+            // Cada vaga adicional acrescenta 50% do percentual base
+            $percent += ($spotCount - 1) * 50;
+        }
+
+        return $percent;
+    }
+
+    /**
      * Calcula o valor adicional por atraso na saída após o horário reservado.
      *
      * @param \DateTimeInterface $scheduledEnd Horário previsto de saída
      * @param \DateTimeInterface $actualEnd Horário real de saída
+     * @param Vehicle|null $vehicle Veículo, se disponível para calcular tarifas específicas
      * @return float Valor adicional a ser cobrado
      */
-    private function calculateLateFee(\DateTimeInterface $scheduledEnd, \DateTimeInterface $actualEnd): float
-    {
+    private function calculateLateFee(
+        \DateTimeInterface $scheduledEnd,
+        \DateTimeInterface $actualEnd,
+        ?Vehicle $vehicle = null
+    ): float {
         // Calcula a duração do atraso em horas (arredondando para cima)
         $overtime = ceil($actualEnd->getTimestamp() - $scheduledEnd->getTimestamp()) / 3600;
 
+        // Obtém as taxas ajustadas pelo tipo de veículo
+        $hourlyRate = $this->getAdjustedHourlyRate($vehicle);
+        $additionalHourRate = $this->getAdjustedAdditionalHourRate($vehicle);
+        $dailyRate = $this->getAdjustedDailyRate($vehicle);
+
         // Aplica uma taxa adicional para atrasos (primeira hora)
-        $lateFee = $this->hourly_rate;
+        $lateFee = $hourlyRate;
 
         // Horas adicionais de atraso
         if ($overtime > 1) {
-            $lateFee += $this->additional_hour_rate * ($overtime - 1);
+            $lateFee += $additionalHourRate * ($overtime - 1);
         }
 
         // Para atrasos muito longos, considera períodos diários
@@ -279,20 +393,20 @@ final class ParkingLot extends Model
             $fullDays = floor($overtime / $dailyPeriod);
             $remainingHours = $overtime - ($fullDays * $dailyPeriod);
 
-            $lateFee = $fullDays * $this->daily_rate;
+            $lateFee = $fullDays * $dailyRate;
 
             if ($remainingHours > 0) {
                 // Primeira hora do período restante
-                $remainingFee = $this->hourly_rate;
+                $remainingFee = $hourlyRate;
 
                 // Horas adicionais
                 if ($remainingHours > 1) {
-                    $remainingFee += min($this->additional_hour_rate * ($remainingHours - 1),
-                                       $this->daily_rate - $this->hourly_rate);
+                    $remainingFee += min($additionalHourRate * ($remainingHours - 1),
+                                       $dailyRate - $hourlyRate);
                 }
 
                 // Limite o valor das horas restantes ao valor da diária
-                $remainingFee = min($remainingFee, $this->daily_rate);
+                $remainingFee = min($remainingFee, $dailyRate);
 
                 $lateFee += $remainingFee;
             }
